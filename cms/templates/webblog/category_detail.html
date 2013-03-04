@@ -1,0 +1,30 @@
+{% extends "webblog/base_categories.html" %}
+
+{% block title %}{{ block.super }} | {{ title }}{% endblock %}
+
+{% block content %}
+    <h2>{{ title }}</h2>
+    {{ description|safe }}<br />
+     
+		{% if object_list.count %}
+        <p>This category contains following entr{{ object.categories.count|pluralize:"y,ies" }}:<br />
+            {% for entry in object_list %}
+                <a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a><br />
+                {% if forloop.last %}{% else %}
+                    {% ifequal forloop.revcounter0 1 %}and {% else %}, {% endifequal %}
+                {% endif %}
+            {% endfor %}
+    {% else %}
+        <p>This category doesn't contain any entry.</p>
+    {% endif %}
+    
+{% endblock %}
+
+{% block whatis %}
+		{% if object_list.count %}
+        <p>This category contains {{ object_list.count }} entr{{ object.categories.count|pluralize:"y,ies" }}
+    {% else %}
+        <p>This category doesn't contain any entry.</p>
+    {% endif %}
+    
+{% endblock %}

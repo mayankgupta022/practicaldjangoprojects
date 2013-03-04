@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Weblog {% block title %}{% endblock %}</title>
+<link href="{{ MEDIA_URL }}webblog/css/base.css" rel="stylesheet" /> 
+</head>
+<body class="{% block bodyclass %}{% endblock %}">
+    <div id="header">
+        <h1 id="branding">Webblog</h1>
+    </div>
+    
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+    <div id="sidebar">
+        <h2>Navigation</h2>
+        <ul id="main-nav">
+            <li id="main-nav-entries"><a href="{% url webblog_entry_archive_index %}">Entries</a></li>
+            <li id="main-nav-links"><a href="{% url webblog_link_archive_index %}">Links</a></li>
+			<li id="main-nav-categories"><a href="{% url webblog_category_list %}">Categories</a></li>
+			<li id="main-nav-tags"><a href="{% url webblog_tag_list %}">Tags</a></li>
+        </ul>
+        
+        <h2>What is this?</h2>
+        {% block whatis %}
+        {% endblock %}
+        
+    </div>
+    
+</body>
+</html>

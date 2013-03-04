@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>{{ flatpage.title }}</title>
+<script type="text/javascript" src="/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">
+tinyMCE.init({
+mode: "textareas",
+theme: "simple"
+});
+</script>
+</head>
+<body>
+<form method="get" action="/search/">
+<p><label for="id_q">Search:</label>
+<input type="text" name="q" id="id_q" />
+<input type="submit" value="Submit" /></p>
+</form>
+<h1>{{ flatpage.title }}</h1>
+{{ flatpage.content }}
+<br />
+<h3>Comments</h3>
+{% load comments %}
+{% get_comment_list for flatpage as comment_list %}
+{% for comment in comment_list %}
+{{ comment }}<br />
+{% endfor %}
+<br />
+<h3>Post a comment:</h3>
+{% render_comment_form for flatpage %}
+</body>
+</html>

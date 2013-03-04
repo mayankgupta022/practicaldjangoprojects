@@ -1,0 +1,59 @@
+{% extends "webblog/base_entries.html" %}
+
+{% block title %}{{ block.super }} | {{ object.title }}{% endblock %}
+
+{% block content %}
+    <h2>{{ object.title }}</h2>
+    {{ object.body|safe }}
+  <h2>Comments</h2>   
+{% load comments %}
+{% get_comment_list for object as comment_list %}
+{% load markup %}
+{% get_comment_count for object as comment_count %}
+{% if comment_count > 0 %}
+{% for comment in comment_list %}
+<p>On {{ comment.submit_date|date:"F j, Y" }},
+{{ comment.name }} said:</p>
+{{ comment.comment|markdown:"safe" }}
+{% endfor %}
+{% else %}
+<p>This entry has no comments so far.</p>
+{% endif %}
+<br />
+ <h2>Post a comment</h2>
+{% render_comment_form for object %}
+
+{% endblock %}
+
+{% block whatis %}
+    <p>This is an entry published on {{ object.pub_date|date:"F j, Y" }}.</p>
+
+    {% load comments %}
+    {% get_comment_count for object as comment_count %}
+    <p>So far, this entry has {{ comment_count }} comment{{ comment_count|pluralize }}.</p>
+    
+    {% if object.categories.count %}
+        <p>This entry is part of the categor{{ object.categories.count|pluralize:"y,ies" }}
+            {% for category in object.categories.all %}
+                <a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+                {% if forloop.last %}{% else %}
+                    {% ifequal forloop.revcounter0 1 %}and {% else %}, {% endifequal %}
+                {% endif %}
+            {% endfor %}
+    {% else %}
+        <p>This entry isn't part of any categories.</p>
+    {% endif %}
+    
+    {% if object.etags.count %}
+        <p>This entry is tagged with 
+            {% for tag in object.etags %}
+                <a href="">{{ tag.name }}</a>
+                {% if forloop.last %}{% else %}
+                    {% ifequal forloop.revcounter0 1 %}and {% else %}, {% endifequal %}
+                {% endif %}
+            {% endfor %}
+        </p>
+    {% else %}
+        <p>This entry doesn't have any tags.</p>
+    {% endif %}
+{% endblock %}
